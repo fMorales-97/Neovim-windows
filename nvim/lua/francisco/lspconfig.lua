@@ -18,27 +18,36 @@ local on_attach  = function(client, bufnr)
 end
 
 -- Activar completado para HTML y CSS
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-nvim_lsp.tsserver.setup {
-  on_attach = on_attach
-}
+local servers = { 'emmet_ls', 'html', 'cssls', 'tsserver' }
+for _, lsp in pairs(servers) do
+  nvim_lsp[lsp].setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+  })
+end
 
---nvim_lsp.angularls.setup {
---  on_attach = on_attach
---}
-
-nvim_lsp.html.setup {
-  capabilities = capabilities,
-  on_attach = on_attach
-}
-
-nvim_lsp.cssls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach
-}
-
-nvim_lsp.emmet_ls.setup {
-  on_attach = on_attach
-}
+-- nvim_lsp.tsserver.setup {
+--   on_attach = on_attach
+--   capa
+-- }
+-- 
+-- --nvim_lsp.angularls.setup {
+-- --  on_attach = on_attach
+-- --}
+-- 
+-- nvim_lsp.html.setup {
+--   capabilities = capabilities,
+--   on_attach = on_attach
+-- }
+-- 
+-- nvim_lsp.cssls.setup {
+--   capabilities = capabilities,
+--   on_attach = on_attach
+-- }
+-- 
+-- nvim_lsp.emmet_ls.setup {
+--   on_attach = on_attach
+-- }
